@@ -1,5 +1,5 @@
 module "{{cookiecutter.service_name}}" {
-  source           = "./modules/helm_chart/tf_module"
+  source           = "./modules/helm_chart"
   env_name         = var.environment
   layer_name       = "{{cookiecutter.service_name}}"
   module_name      = "{{cookiecutter.service_name}}"
