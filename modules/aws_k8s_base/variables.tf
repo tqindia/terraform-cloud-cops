@@ -146,3 +146,8 @@ variable "zone_id" {
 variable "nginx_enabled" {
   type = bool
 }
+
+variable "grafana_enabled" {
+  type    = bool
+  default = true
+}
