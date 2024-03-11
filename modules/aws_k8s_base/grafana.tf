@@ -4,7 +4,7 @@ resource "helm_release" "grafana" {
   name            = "grafana"
   repository      = "https://grafana.github.io/helm-charts"
   namespace       = "grafana"
-  version         = "0.3.15"
+  version         = "0.36.0"
   atomic          = true
   cleanup_on_fail = true
   values = [
