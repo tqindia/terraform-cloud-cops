@@ -288,7 +288,7 @@ data "aws_iam_policy_document" "load_balancer" {
 }
 
 resource "aws_iam_policy" "load_balancer" {
-  name   = "opta-${var.env_name}-albc"
+  name   = "cops-${var.env_name}-albc"
   policy = data.aws_iam_policy_document.load_balancer.json
 }
 
@@ -312,7 +312,7 @@ data "aws_iam_policy_document" "trust_k8s_openid_alb" {
 
 resource "aws_iam_role" "load_balancer" {
   assume_role_policy = data.aws_iam_policy_document.trust_k8s_openid_alb.json
-  name               = "opta-${var.env_name}-albc"
+  name               = "cops-${var.env_name}-albc"
 }
 
 resource "aws_iam_role_policy_attachment" "load_balancer" {

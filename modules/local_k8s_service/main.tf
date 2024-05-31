@@ -9,7 +9,7 @@ terraform {
 
 
 resource "helm_release" "k8s-service" {
-  chart = "${path.module}/../../opta-k8s-service-helm"
+  chart = "${path.module}/../../cops-k8s-service-helm"
   name  = "${var.layer_name}-${var.module_name}"
   values = [
     yamlencode({

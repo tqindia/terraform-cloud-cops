@@ -7,12 +7,12 @@ data "aws_kms_key" "env_key" {
 }
 
 resource "aws_security_group" "vpn" {
-  name_prefix = "opta-${var.env_name}-vpn"
+  name_prefix = "cops-${var.env_name}-vpn"
   description = "VPN security group."
   vpc_id      = var.vpc_id
 
   tags = {
-    "Name" = "opta-${var.env_name}-vpn"
+    "Name" = "cops-${var.env_name}-vpn"
   }
 
   egress {
@@ -29,7 +29,7 @@ resource "random_id" "vpn_log_suffix" {
 }
 
 resource "aws_cloudwatch_log_group" "vpn_logs" {
-  name              = "opta-${var.env_name}-vpn-${random_id.vpn_log_suffix.hex}"
+  name              = "cops-${var.env_name}-vpn-${random_id.vpn_log_suffix.hex}"
   kms_key_id        = data.aws_kms_key.env_key.arn
   retention_in_days = "14"
   lifecycle { ignore_changes = [name] }
@@ -41,7 +41,7 @@ resource "aws_cloudwatch_log_stream" "logs" {
 }
 
 resource "aws_ec2_client_vpn_endpoint" "vpn" {
-  description            = "opta-${var.env_name}-${var.module_name}"
+  description            = "cops-${var.env_name}-${var.module_name}"
   server_certificate_arn = aws_acm_certificate.server.arn
   client_cidr_block      = var.client_cidr_block
   vpc_id                 = var.vpc_id

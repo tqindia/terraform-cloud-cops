@@ -15,6 +15,6 @@ variable "module_name" {
 
 variable "local_k8s_cluster_name" {
   type        = string
-  default     = "kind-opta-local-cluster"
+  default     = "kind-cops-local-cluster"
   description = "The name of the local K8s cluster"
 }

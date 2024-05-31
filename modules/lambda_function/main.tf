@@ -14,13 +14,13 @@ data "aws_subnet_ids" "private_subnets" {
 
 resource "aws_security_group" "lambda" {
   count  = var.vpc_id == null ? 0 : 1
-  name   = "opta-${var.module_name}-${random_string.lambda.result}"
+  name   = "cops-${var.module_name}-${random_string.lambda.result}"
   vpc_id = var.vpc_id
 }
 
 data "aws_kms_key" "main" {
   count  = var.vpc_id == null ? 0 : 1
-  key_id = "alias/opta-${var.env_name}"
+  key_id = "alias/cops-${var.env_name}"
 }
 
 data "aws_iam_policy_document" "lambda_trust" {
@@ -34,7 +34,7 @@ data "aws_iam_policy_document" "lambda_trust" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "opta-${var.module_name}-${random_string.lambda.result}"
+  name = "cops-${var.module_name}-${random_string.lambda.result}"
 
   assume_role_policy = data.aws_iam_policy_document.lambda_trust.json
 }
@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "lambda_cloudwatch" {
 }
 
 resource "aws_iam_policy" "lambda_logging" {
-  name        = "opta-${var.module_name}-${random_string.lambda.result}-cloudwatch"
+  name        = "cops-${var.module_name}-${random_string.lambda.result}-cloudwatch"
   description = "IAM policy for logging from a lambda"
   policy      = data.aws_iam_policy_document.lambda_cloudwatch.json
 }
@@ -71,13 +71,13 @@ resource "aws_iam_role_policy_attachment" "lambda_logs" {
 }
 
 resource "aws_cloudwatch_log_group" "logs" {
-  name              = "/aws/lambda/opta-${var.module_name}-${random_string.lambda.result}"
+  name              = "/aws/lambda/cops-${var.module_name}-${random_string.lambda.result}"
   kms_key_id        = var.vpc_id == null ? "" : data.aws_kms_key.main[0].arn
   retention_in_days = 14
 }
 
 resource "aws_lambda_function" "lambda" {
-  function_name    = "opta-${var.module_name}-${random_string.lambda.result}"
+  function_name    = "cops-${var.module_name}-${random_string.lambda.result}"
   role             = aws_iam_role.iam_for_lambda.arn
   runtime          = var.runtime
   filename         = var.filename

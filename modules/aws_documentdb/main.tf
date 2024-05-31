@@ -4,11 +4,11 @@ resource "random_password" "documentdb_auth" {
 }
 
 data "aws_security_group" "security_group" {
-  name = "opta-${var.env_name}-documentdb-sg"
+  name = "cops-${var.env_name}-documentdb-sg"
 }
 
 data "aws_kms_key" "main" {
-  key_id = "alias/opta-${var.env_name}"
+  key_id = "alias/cops-${var.env_name}"
 }
 
 resource "random_string" "db_name_hash" {
@@ -19,7 +19,7 @@ resource "random_string" "db_name_hash" {
 
 resource "aws_docdb_cluster_instance" "cluster_instances" {
   count                      = var.instance_count
-  identifier                 = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
+  identifier                 = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
   cluster_identifier         = aws_docdb_cluster.cluster.id
   instance_class             = var.instance_class
   apply_immediately          = true
@@ -30,10 +30,10 @@ resource "aws_docdb_cluster_instance" "cluster_instances" {
 }
 
 resource "aws_docdb_cluster" "cluster" {
-  cluster_identifier      = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
+  cluster_identifier      = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
   master_username         = "master_user"
   master_password         = random_password.documentdb_auth.result
-  db_subnet_group_name    = "opta-${var.env_name}-docdb"
+  db_subnet_group_name    = "cops-${var.env_name}-docdb"
   engine_version          = var.engine_version
   storage_encrypted       = true
   kms_key_id              = data.aws_kms_key.main.arn

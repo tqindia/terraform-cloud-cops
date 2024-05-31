@@ -1,12 +1,12 @@
 data "aws_region" "current" {}
 
 data "aws_eks_cluster" "main" {
-  name = "opta-${var.env_name}"
+  name = "cops-${var.env_name}"
 }
 
 locals {
   default_labels = {
-    node_group_name = "opta-${var.layer_name}-${var.module_name}"
+    node_group_name = "cops-${var.layer_name}-${var.module_name}"
     ami_type        = var.ami_type
   }
 }

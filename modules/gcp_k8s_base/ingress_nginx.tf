@@ -12,7 +12,7 @@ resource "helm_release" "ingress-nginx" {
     yamlencode({
       controller : {
         podLabels : {
-          "opta-ingress-healthcheck" : "yes"
+          "cops-ingress-healthcheck" : "yes"
         }
         extraArgs : var.private_key != "" || var.expose_self_signed_ssl ? { default-ssl-certificate : "ingress-nginx/secret-tls" } : {}
         config : local.config
@@ -84,6 +84,6 @@ resource "helm_release" "ingress-nginx" {
   ]
   depends_on = [
     helm_release.linkerd,
-    helm_release.opta_base
+    helm_release.cops_base
   ]
 }

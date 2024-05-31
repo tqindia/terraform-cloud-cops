@@ -1,17 +1,17 @@
 output "vpc_id" {
-  value = azurerm_virtual_network.opta.id
+  value = azurerm_virtual_network.cops.id
 }
 
 output "vpc_name" {
-  value = azurerm_virtual_network.opta.name
+  value = azurerm_virtual_network.cops.name
 }
 
 output "private_subnet_id" {
-  value = azurerm_subnet.opta.id
+  value = azurerm_subnet.cops.id
 }
 
 output "private_subnet_name" {
-  value = azurerm_subnet.opta.name
+  value = azurerm_subnet.cops.name
 }
 
 output "acr_id" {
@@ -27,5 +27,5 @@ output "acr_login_url" {
 }
 
 output "public_nat_ips" {
-  value = azurerm_public_ip.opta.ip_address
+  value = azurerm_public_ip.cops.ip_address
 }

@@ -8,7 +8,7 @@ output "db_password" {
 }
 
 output "db_host" {
-  value = "opta-local-mysql.${var.paasns}.svc.cluster.local"
+  value = "cops-local-mysql.${var.paasns}.svc.cluster.local"
 }
 
 output "db_name" {

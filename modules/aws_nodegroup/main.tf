@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "node_group" {
 }
 
 resource "aws_iam_role" "node_group" {
-  name = "opta-${var.layer_name}-eks-${var.module_name}-node-group"
+  name = "cops-${var.layer_name}-eks-${var.module_name}-node-group"
 
   assume_role_policy = data.aws_iam_policy_document.node_group.json
   tags = {
@@ -46,7 +46,7 @@ resource "random_id" "key_suffix" {
 
 resource "aws_eks_node_group" "node_group" {
   cluster_name    = data.aws_eks_cluster.main.name
-  node_group_name = "opta-${var.layer_name}-${var.module_name}-${random_id.key_suffix.hex}"
+  node_group_name = "cops-${var.layer_name}-${var.module_name}-${random_id.key_suffix.hex}"
   node_role_arn   = aws_iam_role.node_group.arn
   subnet_ids      = data.aws_eks_cluster.main.vpc_config[0].subnet_ids
   capacity_type   = var.spot_instances ? "SPOT" : "ON_DEMAND"
@@ -68,7 +68,7 @@ resource "aws_eks_node_group" "node_group" {
     content {
       key    = taint.value["key"]
       effect = lookup(taint.value, "effect", "NO_SCHEDULE")
-      value  = lookup(taint.value, "value", "opta")
+      value  = lookup(taint.value, "value", "cops")
     }
   }
 

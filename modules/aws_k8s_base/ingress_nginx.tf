@@ -11,7 +11,7 @@ resource "tls_self_signed_cert" "self_signed" {
 
   subject {
     common_name    = "*.elb.${data.aws_region.current.name}.amazonaws.com"
-    organization   = "Opta"
+    organization   = "cops"
     street_address = []
   }
 
@@ -52,7 +52,7 @@ resource "helm_release" "ingress-nginx" {
     yamlencode({
       controller : {
         podLabels : {
-          "opta-ingress-healthcheck" : "yes"
+          "cops-ingress-healthcheck" : "yes"
         }
         extraArgs : {}
         config : local.config
@@ -126,7 +126,7 @@ resource "helm_release" "ingress-nginx" {
             "service.beta.kubernetes.io/aws-load-balancer-name" : local.load_balancer_name
             "service.beta.kubernetes.io/aws-load-balancer-access-log-enabled" : true
             "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-name" : var.s3_log_bucket_name
-            "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix" : "opta-k8s-cluster"
+            "service.beta.kubernetes.io/aws-load-balancer-access-log-s3-bucket-prefix" : "cops-k8s-cluster"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-ports" : local.nginx_tls_ports
             "service.beta.kubernetes.io/aws-load-balancer-ssl-negotiation-policy" : "ELBSecurityPolicy-TLS13-1-2-2021-06"
             "service.beta.kubernetes.io/aws-load-balancer-ssl-cert" : var.expose_self_signed_ssl ? aws_acm_certificate.self_signed[0].arn : (var.private_key != "" ? aws_acm_certificate.user_provided[0].arn : var.cert_arn)
@@ -139,7 +139,7 @@ resource "helm_release" "ingress-nginx" {
   ]
   depends_on = [
     helm_release.linkerd,
-    helm_release.opta_base,
+    helm_release.cops_base,
     helm_release.load_balancer
   ]
 }

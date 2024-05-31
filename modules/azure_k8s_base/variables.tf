@@ -7,8 +7,8 @@ locals {
 }
 
 data "azurerm_subscription" "current" {}
-data "azurerm_resource_group" "opta" {
-  name = "opta-${var.env_name}"
+data "azurerm_resource_group" "cops" {
+  name = "cops-${var.env_name}"
 }
 
 variable "env_name" {

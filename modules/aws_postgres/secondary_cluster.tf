@@ -1,7 +1,7 @@
 resource "aws_rds_cluster" "secondary" {
   count                     = var.existing_global_database_id == null ? 0 : 1
-  cluster_identifier        = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
-  db_subnet_group_name      = "opta-${var.env_name}"
+  cluster_identifier        = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
+  db_subnet_group_name      = "cops-${var.env_name}"
   global_cluster_identifier = var.existing_global_database_id
   engine                    = "aurora-postgresql"
   engine_version            = var.engine_version
@@ -19,7 +19,7 @@ resource "aws_rds_cluster" "secondary" {
 
 resource "aws_rds_cluster_instance" "secondary" {
   count                           = var.existing_global_database_id == null ? 0 : (var.multi_az ? 2 : 1)
-  identifier                      = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
+  identifier                      = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
   cluster_identifier              = aws_rds_cluster.secondary[0].id
   instance_class                  = var.instance_class
   engine                          = aws_rds_cluster.secondary[0].engine

@@ -14,8 +14,8 @@ resource "random_password" "root_auth" {
 }
 
 
-resource "azurerm_postgresql_server" "opta" {
-  name                = "opta-${var.layer_name}-${var.module_name}-${random_id.key_suffix.hex}"
+resource "azurerm_postgresql_server" "cops" {
+  name                = "cops-${var.layer_name}-${var.module_name}-${random_id.key_suffix.hex}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
 
@@ -42,25 +42,25 @@ resource "azurerm_postgresql_server" "opta" {
   }
 }
 
-resource "azurerm_private_endpoint" "opta" {
-  name                = "opta-${var.layer_name}-${var.module_name}"
+resource "azurerm_private_endpoint" "cops" {
+  name                = "cops-${var.layer_name}-${var.module_name}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
-  subnet_id           = data.azurerm_subnet.opta.id
+  subnet_id           = data.azurerm_subnet.cops.id
 
   private_service_connection {
-    name                           = "opta-${var.layer_name}-${var.module_name}-${random_id.key_suffix.hex}"
+    name                           = "cops-${var.layer_name}-${var.module_name}-${random_id.key_suffix.hex}"
     is_manual_connection           = false
-    private_connection_resource_id = azurerm_postgresql_server.opta.id
+    private_connection_resource_id = azurerm_postgresql_server.cops.id
     subresource_names              = ["postgresqlServer"]
   }
 }
 
 
-resource "azurerm_postgresql_database" "opta" {
+resource "azurerm_postgresql_database" "cops" {
   name                = "main"
   resource_group_name = data.azurerm_resource_group.main.name
-  server_name         = azurerm_postgresql_server.opta.name
+  server_name         = azurerm_postgresql_server.cops.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
 }
@@ -68,7 +68,7 @@ resource "azurerm_postgresql_database" "opta" {
 resource "azurerm_postgresql_configuration" "log_disconnections" {
   name                = "log_disconnections"
   resource_group_name = data.azurerm_resource_group.main.name
-  server_name         = azurerm_postgresql_server.opta.name
+  server_name         = azurerm_postgresql_server.cops.name
   value               = "on"
 }
 
@@ -76,7 +76,7 @@ resource "azurerm_postgresql_configuration" "log_disconnections" {
 resource "azurerm_postgresql_configuration" "log_duration" {
   name                = "log_duration"
   resource_group_name = data.azurerm_resource_group.main.name
-  server_name         = azurerm_postgresql_server.opta.name
+  server_name         = azurerm_postgresql_server.cops.name
   value               = "on"
 }
 
@@ -84,6 +84,6 @@ resource "azurerm_postgresql_configuration" "log_duration" {
 resource "azurerm_postgresql_configuration" "log_retention_days" {
   name                = "log_retention_days"
   resource_group_name = data.azurerm_resource_group.main.name
-  server_name         = azurerm_postgresql_server.opta.name
+  server_name         = azurerm_postgresql_server.cops.name
   value               = "5"
 }

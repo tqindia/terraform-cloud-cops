@@ -6,7 +6,7 @@ resource "random_string" "repo_name_hash" {
 
 resource "aws_ecr_repository" "repo" {
   count = local.uppercase_image == "AUTO" ? 1 : 0
-  name  = "opta-${var.layer_name}-${var.module_name}-${random_string.repo_name_hash.result}"
+  name  = "cops-${var.layer_name}-${var.module_name}-${random_string.repo_name_hash.result}"
   tags = {
     terraform = "true"
   }

@@ -6,8 +6,8 @@ terraform {
     }
   }
 }
-resource "helm_release" "opta-local-postgresql" {
-  name             = "opta-local-postgres"
+resource "helm_release" "cops-local-postgresql" {
+  name             = "cops-local-postgres"
   repository       = "https://charts.bitnami.com/bitnami"
   chart            = "postgresql"
   version          = "11.6.5"

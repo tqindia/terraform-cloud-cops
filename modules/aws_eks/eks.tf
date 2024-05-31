@@ -1,10 +1,10 @@
 resource "aws_security_group" "eks" {
-  name_prefix = "opta-${var.layer_name}"
+  name_prefix = "cops-${var.layer_name}"
   description = "EKS cluster security group."
   vpc_id      = var.vpc_id
 
   tags = {
-    "Name" = "opta-${var.layer_name}-eks_cluster_sg"
+    "Name" = "cops-${var.layer_name}-eks_cluster_sg"
   }
 
   ingress {
@@ -31,7 +31,7 @@ resource "aws_eks_cluster" "cluster" {
   role_arn = aws_iam_role.cluster_role.arn
   version  = var.k8s_version
 
-  # To be fixed, although early opta users need this - Cluster allows access from a public CIDR: 0.0.0.0/0
+  # To be fixed, although early cops users need this - Cluster allows access from a public CIDR: 0.0.0.0/0
   #tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr
   vpc_config {
     subnet_ids              = var.private_subnet_ids
@@ -77,7 +77,7 @@ resource "aws_security_group_rule" "control_plane_access" {
 }
 
 resource "aws_cloudwatch_log_group" "cluster_logs" {
-  name              = "/aws/eks/opta-${var.layer_name}/cluster"
+  name              = "/aws/eks/cops-${var.layer_name}/cluster"
   kms_key_id        = data.aws_kms_key.env_key.arn
   retention_in_days = var.eks_log_retention
   tags = {

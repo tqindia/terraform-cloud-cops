@@ -1,6 +1,6 @@
-resource "helm_release" "opta_base" {
-  chart     = "${path.module}/opta-base"
-  name      = "opta-base"
+resource "helm_release" "cops_base" {
+  chart     = "${path.module}/cops-base"
+  name      = "cops-base"
   namespace = "default"
   values = [yamlencode({
     tls_key : base64encode(var.private_key),

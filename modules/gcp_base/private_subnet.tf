@@ -1,5 +1,5 @@
 resource "google_compute_subnetwork" "project_subnet" {
-  name                     = "opta-${var.layer_name}-${data.google_client_config.current.region}-private"
+  name                     = "cops-${var.layer_name}-${data.google_client_config.current.region}-private"
   ip_cidr_range            = var.private_ipv4_cidr_block
   private_ip_google_access = true
   network                  = google_compute_network.vpc.id

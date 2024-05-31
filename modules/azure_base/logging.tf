@@ -3,9 +3,9 @@ resource "random_id" "logging_suffix" {
 }
 
 resource "azurerm_storage_account" "infra_logging" {
-  name                      = "optainfralogs${random_id.logging_suffix.hex}"
-  location                  = data.azurerm_resource_group.opta.location
-  resource_group_name       = data.azurerm_resource_group.opta.name
+  name                      = "copsinfralogs${random_id.logging_suffix.hex}"
+  location                  = data.azurerm_resource_group.cops.location
+  resource_group_name       = data.azurerm_resource_group.cops.name
   account_replication_type  = "LRS"
   account_tier              = "Standard"
   enable_https_traffic_only = true
@@ -17,8 +17,8 @@ resource "azurerm_storage_account" "infra_logging" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "infra_logging" {
-  name               = "opta-${var.env_name}"
-  target_resource_id = azurerm_key_vault.opta.id
+  name               = "cops-${var.env_name}"
+  target_resource_id = azurerm_key_vault.cops.id
   storage_account_id = azurerm_storage_account.infra_logging.id
 
   log {
@@ -51,25 +51,25 @@ resource "azurerm_monitor_diagnostic_setting" "infra_logging" {
 }
 
 data "azurerm_network_watcher" "default" {
-  name                = "NetworkWatcher_${data.azurerm_resource_group.opta.location}"
+  name                = "NetworkWatcher_${data.azurerm_resource_group.cops.location}"
   resource_group_name = "NetworkWatcherRG"
-  depends_on          = [azurerm_virtual_network.opta]
+  depends_on          = [azurerm_virtual_network.cops]
 }
 
 resource "azurerm_log_analytics_workspace" "watcher" {
-  name                = "opta-${var.env_name}"
-  location            = data.azurerm_resource_group.opta.location
-  resource_group_name = data.azurerm_resource_group.opta.name
+  name                = "cops-${var.env_name}"
+  location            = data.azurerm_resource_group.cops.location
+  resource_group_name = data.azurerm_resource_group.cops.name
   sku                 = "PerGB2018"
 }
 
 resource "azurerm_network_watcher_flow_log" "vpc_flow_log" {
-  name                 = "opta-${var.env_name}"
-  location             = data.azurerm_resource_group.opta.location
+  name                 = "cops-${var.env_name}"
+  location             = data.azurerm_resource_group.cops.location
   network_watcher_name = data.azurerm_network_watcher.default.name
   resource_group_name  = "NetworkWatcherRG"
 
-  network_security_group_id = azurerm_network_security_group.opta.id
+  network_security_group_id = azurerm_network_security_group.cops.id
   storage_account_id        = azurerm_storage_account.infra_logging.id
   enabled                   = true
 

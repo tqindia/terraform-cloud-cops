@@ -4,7 +4,7 @@ resource "aws_vpc_endpoint" "s3" {
   service_name      = "com.amazonaws.${data.aws_region.current.name}.s3"
   vpc_endpoint_type = "Gateway"
   tags = {
-    Name      = "opta-${var.layer_name}-s3-gateway"
+    Name      = "cops-${var.layer_name}-s3-gateway"
     terraform = "true"
   }
 }

@@ -38,7 +38,7 @@ resource "aws_kms_key" "key" {
   policy              = data.aws_iam_policy_document.kms_policy.json
   enable_key_rotation = true
   tags = {
-    Name      = "opta-${var.layer_name}"
+    Name      = "cops-${var.layer_name}"
     terraform = "true"
   }
 }

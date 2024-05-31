@@ -4,11 +4,11 @@ resource "random_password" "pg_password" {
 }
 
 data "aws_security_group" "security_group" {
-  name = "opta-${var.env_name}-db-sg"
+  name = "cops-${var.env_name}-db-sg"
 }
 
 data "aws_kms_key" "main" {
-  key_id = "alias/opta-${var.env_name}"
+  key_id = "alias/cops-${var.env_name}"
 }
 
 resource "random_string" "db_name_hash" {
@@ -19,8 +19,8 @@ resource "random_string" "db_name_hash" {
 
 resource "aws_rds_cluster" "db_cluster" {
   count                   = var.existing_global_database_id == null ? 1 : 0
-  cluster_identifier      = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
-  db_subnet_group_name    = "opta-${var.env_name}"
+  cluster_identifier      = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
+  db_subnet_group_name    = "cops-${var.env_name}"
   database_name           = var.restore_from_snapshot == null ? var.database_name : null
   engine                  = "aurora-postgresql"
   engine_version          = var.engine_version
@@ -42,7 +42,7 @@ resource "aws_rds_cluster" "db_cluster" {
 
 resource "aws_rds_cluster_instance" "db_instance" {
   count                           = var.existing_global_database_id == null ? (var.multi_az ? 2 : 1) : 0
-  identifier                      = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
+  identifier                      = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
   cluster_identifier              = aws_rds_cluster.db_cluster[0].id
   instance_class                  = var.instance_class
   engine                          = aws_rds_cluster.db_cluster[0].engine

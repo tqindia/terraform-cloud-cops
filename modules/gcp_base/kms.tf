@@ -3,7 +3,7 @@ resource "random_id" "key_suffix" {
 }
 
 resource "google_secret_manager_secret" "kms_secret" {
-  secret_id = "opta-${var.layer_name}-kms-suffix"
+  secret_id = "cops-${var.layer_name}-kms-suffix"
 
   replication {
     automatic = true
@@ -18,12 +18,12 @@ resource "google_secret_manager_secret_version" "secret-version-basic" {
 }
 
 resource "google_kms_key_ring" "keyring" {
-  name     = "opta-${var.layer_name}-${random_id.key_suffix.hex}"
+  name     = "cops-${var.layer_name}-${random_id.key_suffix.hex}"
   location = data.google_client_config.current.region
 }
 
 resource "google_kms_crypto_key" "key" {
-  name            = "opta-${var.layer_name}-${random_id.key_suffix.hex}"
+  name            = "cops-${var.layer_name}-${random_id.key_suffix.hex}"
   key_ring        = google_kms_key_ring.keyring.id
   rotation_period = "7776000s"
 }

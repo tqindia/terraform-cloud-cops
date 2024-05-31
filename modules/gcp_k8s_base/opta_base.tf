@@ -10,9 +10,9 @@ resource "tls_self_signed_cert" "nginx_ca" {
   is_ca_certificate = true
 
   subject {
-    common_name         = "Opta is awesome"
-    organization        = "Opta Self Signed"
-    organizational_unit = "opta"
+    common_name         = "cops is awesome"
+    organization        = "cops Self Signed"
+    organizational_unit = "cops"
   }
 
   validity_period_hours = 87600
@@ -35,11 +35,11 @@ resource "tls_private_key" "default" {
 resource "tls_cert_request" "default_cert_request" {
   count           = var.nginx_enabled && var.expose_self_signed_ssl ? 1 : 0
   private_key_pem = tls_private_key.default[0].private_key_pem
-  dns_names       = ["optaisawesome.com"]
+  dns_names       = ["copsisawesome.com"]
   ip_addresses    = ["${google_compute_global_address.load_balancer[0].address}"]
 
   subject {
-    common_name  = "optaisawesome.com"
+    common_name  = "copsisawesome.com"
     organization = "Org"
   }
   lifecycle {
@@ -62,9 +62,9 @@ resource "tls_locally_signed_cert" "default_cert" {
   ]
 }
 
-resource "helm_release" "opta_base" {
-  chart     = "${path.module}/opta-base"
-  name      = "opta-base"
+resource "helm_release" "cops_base" {
+  chart     = "${path.module}/cops-base"
+  name      = "cops-base"
   namespace = "default"
   values = [
     yamlencode({

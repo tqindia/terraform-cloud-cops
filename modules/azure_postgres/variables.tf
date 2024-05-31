@@ -1,11 +1,11 @@
 data "azurerm_resource_group" "main" {
-  name = "opta-${var.env_name}"
+  name = "cops-${var.env_name}"
 }
 
-data "azurerm_subnet" "opta" {
-  name                 = "opta-${var.env_name}-subnet"
+data "azurerm_subnet" "cops" {
+  name                 = "cops-${var.env_name}-subnet"
   resource_group_name  = data.azurerm_resource_group.main.name
-  virtual_network_name = "opta-${var.env_name}"
+  virtual_network_name = "cops-${var.env_name}"
 }
 
 variable "env_name" {

@@ -1,5 +1,5 @@
 data "google_compute_network" "vpc" {
-  name = "opta-${var.env_name}"
+  name = "cops-${var.env_name}"
 }
 
 variable "env_name" {

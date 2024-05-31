@@ -14,8 +14,8 @@ resource "random_string" "node_pool_id" {
 }
 
 resource "google_service_account" "gke_node" {
-  account_id   = "opta-${var.layer_name}-${random_string.node_pool_hash.result}"
-  display_name = "opta-${var.layer_name}-default-node-pool"
+  account_id   = "cops-${var.layer_name}-${random_string.node_pool_hash.result}"
+  display_name = "cops-${var.layer_name}-default-node-pool"
   project      = data.google_client_config.current.project
 }
 
@@ -53,7 +53,7 @@ resource "google_storage_bucket_iam_member" "viewer" {
 }
 
 resource "google_container_node_pool" "node_pool" {
-  name               = "opta-${var.layer_name}-${random_string.node_pool_id.id}"
+  name               = "cops-${var.layer_name}-${random_string.node_pool_id.id}"
   cluster            = data.google_container_cluster.main.name
   location           = data.google_client_config.current.region
   node_locations     = var.node_zone_names
@@ -73,7 +73,7 @@ resource "google_container_node_pool" "node_pool" {
     preemptible  = var.preemptible
     machine_type = var.node_instance_type
     disk_size_gb = var.node_disk_size
-    tags         = ["opta-${var.layer_name}-nodes"]
+    tags         = ["cops-${var.layer_name}-nodes"]
 
     service_account = google_service_account.gke_node.email
     oauth_scopes = [
@@ -88,7 +88,7 @@ resource "google_container_node_pool" "node_pool" {
     }
 
     labels = {
-      node_pool_name = "opta-${var.layer_name}-secondary"
+      node_pool_name = "cops-${var.layer_name}-secondary"
     }
 
     dynamic "taint" {
@@ -96,7 +96,7 @@ resource "google_container_node_pool" "node_pool" {
       content {
         key    = taint.value["key"]
         effect = lookup(taint.value, "effect", "NO_SCHEDULE")
-        value  = lookup(taint.value, "value", "opta")
+        value  = lookup(taint.value, "value", "cops")
       }
     }
 

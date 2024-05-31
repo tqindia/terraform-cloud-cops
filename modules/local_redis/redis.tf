@@ -6,8 +6,8 @@ terraform {
     }
   }
 }
-resource "helm_release" "opta-local-redis" {
-  name             = "opta-local-redis"
+resource "helm_release" "cops-local-redis" {
+  name             = "cops-local-redis"
   repository       = "https://charts.bitnami.com/bitnami"
   chart            = "redis"
   version          = "16.12.0"

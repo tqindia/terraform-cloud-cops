@@ -10,20 +10,20 @@ resource "random_string" "redis_name_hash" {
 }
 
 data "aws_security_group" "security_group" {
-  name = "opta-${var.env_name}-elasticache-sg"
+  name = "cops-${var.env_name}-elasticache-sg"
 }
 
 data "aws_kms_key" "main" {
-  key_id = "alias/opta-${var.env_name}"
+  key_id = "alias/cops-${var.env_name}"
 }
 
 resource "aws_elasticache_replication_group" "redis_cluster" {
   automatic_failover_enabled    = true
   auto_minor_version_upgrade    = true
   security_group_ids            = [data.aws_security_group.security_group.id]
-  subnet_group_name             = "opta-${var.env_name}"
-  replication_group_id          = "opta-${var.layer_name}-${var.module_name}-${random_string.redis_name_hash.result}"
-  replication_group_description = "Elasticache opta-${var.layer_name}-${var.module_name}-${random_string.redis_name_hash.result}"
+  subnet_group_name             = "cops-${var.env_name}"
+  replication_group_id          = "cops-${var.layer_name}-${var.module_name}-${random_string.redis_name_hash.result}"
+  replication_group_description = "Elasticache cops-${var.layer_name}-${var.module_name}-${random_string.redis_name_hash.result}"
   node_type                     = var.node_type
   engine_version                = var.redis_version
   number_cache_clusters         = 2

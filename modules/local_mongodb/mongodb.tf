@@ -6,8 +6,8 @@ terraform {
     }
   }
 }
-resource "helm_release" "opta-local-mongodb" {
-  name             = "opta-local-mongodb"
+resource "helm_release" "cops-local-mongodb" {
+  name             = "cops-local-mongodb"
   repository       = "https://charts.bitnami.com/bitnami"
   chart            = "mongodb"
   version          = "10.26.3"

@@ -1,7 +1,7 @@
 data "google_client_config" "current" {}
 
 data "google_container_cluster" "main" {
-  name     = "opta-${var.layer_name}"
+  name     = "cops-${var.layer_name}"
   location = data.google_client_config.current.region
 }
 

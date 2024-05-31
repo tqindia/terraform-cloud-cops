@@ -1,6 +1,6 @@
 locals {
-  s3_origin_id = "optaDefaultOriginId"
-  lb_origin_id = "optaDefaultLbOriginId"
+  s3_origin_id = "copsDefaultOriginId"
+  lb_origin_id = "copsDefaultLbOriginId"
 }
 
 variable "env_name" {

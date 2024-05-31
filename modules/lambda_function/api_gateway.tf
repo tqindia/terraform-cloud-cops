@@ -1,6 +1,6 @@
 resource "aws_apigatewayv2_api" "api" {
   count         = var.expose_via_domain ? 1 : 0
-  name          = "opta-${var.module_name}-${random_string.lambda.result}"
+  name          = "cops-${var.module_name}-${random_string.lambda.result}"
   protocol_type = "HTTP"
 }
 
@@ -29,7 +29,7 @@ resource "aws_apigatewayv2_deployment" "deployment" {
   description = "Lambda deployment"
 
   triggers = {
-    redeployment = sha1("opta-v1")
+    redeployment = sha1("cops-v1")
   }
 
   lifecycle {

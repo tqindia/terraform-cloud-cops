@@ -34,9 +34,9 @@ variable "delegated" {
 }
 
 data "google_compute_network" "vpc" {
-  name = "opta-${var.layer_name}"
+  name = "cops-${var.layer_name}"
 }
 
 data "google_compute_subnetwork" "private" {
-  name = "opta-${var.layer_name}-${data.google_client_config.current.region}-private"
+  name = "cops-${var.layer_name}-${data.google_client_config.current.region}-private"
 }

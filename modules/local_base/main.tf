@@ -8,12 +8,12 @@ resource "null_resource" "local-base" {
     when    = destroy
     command = <<EOT
         echo "Uninstalling kind"
-        rm -rf $HOME/.opta/local/kind
+        rm -rf $HOME/.cops/local/kind
         echo "Stopping and removing local docker registry"
-        docker stop opta-local-registry
-        docker rm opta-local-registry
-        echo "Removing ./opta/local directory"
-        rm -rf $HOME/.opta/local
+        docker stop cops-local-registry
+        docker rm cops-local-registry
+        echo "Removing ./cops/local directory"
+        rm -rf $HOME/.cops/local
     EOT
 
     working_dir = path.module
@@ -32,7 +32,7 @@ resource "null_resource" "k8s-installer" {
     when    = destroy
     command = <<EOT
         echo "Removing kind cluster"
-        $HOME/.opta/local/kind  delete cluster --name opta-local-cluster
+        $HOME/.cops/local/kind  delete cluster --name cops-local-cluster
     EOT
 
     working_dir = path.module

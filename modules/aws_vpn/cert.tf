@@ -19,7 +19,7 @@ resource "tls_self_signed_cert" "ca_cert" {
 }
 
 resource "aws_ssm_parameter" "ca_pem" {
-  name        = "/opta/${var.env_name}/vpn-ca-cert-pem"
+  name        = "/cops/${var.env_name}/vpn-ca-cert-pem"
   description = "The pem of the VPN CA certificate"
   type        = "SecureString"
   tier        = "Advanced"
@@ -27,7 +27,7 @@ resource "aws_ssm_parameter" "ca_pem" {
 }
 
 resource "aws_ssm_parameter" "ca_key" {
-  name        = "/opta/${var.env_name}/vpn-ca-key-pem"
+  name        = "/cops/${var.env_name}/vpn-ca-key-pem"
   description = "The pem of the key of the VPN CA certificate"
   type        = "SecureString"
   tier        = "Advanced"
@@ -106,15 +106,15 @@ resource "tls_locally_signed_cert" "client_issuer_cert" {
 
 
 resource "aws_ssm_parameter" "ovpn_profile" {
-  name        = "/opta/${var.env_name}/ovpn"
-  description = "The vpn profile for the Opta-provisioned AWS VPN endpoint for this environment"
+  name        = "/cops/${var.env_name}/ovpn"
+  description = "The vpn profile for the cops-provisioned AWS VPN endpoint for this environment"
   type        = "SecureString"
   tier        = "Advanced"
   value       = <<EOT
 client
 dev tun
 proto udp
-remote opta.${trimprefix(aws_ec2_client_vpn_endpoint.vpn.dns_name, "*.")} 443
+remote cops.${trimprefix(aws_ec2_client_vpn_endpoint.vpn.dns_name, "*.")} 443
 remote-random-hostname
 resolv-retry infinite
 nobind

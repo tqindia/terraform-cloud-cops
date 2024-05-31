@@ -1,5 +1,5 @@
 resource "google_compute_firewall" "firewall" {
-  name      = "opta-${var.layer_name}-${data.google_client_config.current.region}-private"
+  name      = "cops-${var.layer_name}-${data.google_client_config.current.region}-private"
   network   = google_compute_network.vpc.id
   direction = "INGRESS"
   allow {
@@ -17,7 +17,7 @@ resource "google_compute_firewall" "firewall" {
 }
 
 resource "google_compute_firewall" "k8s_extra_rules" {
-  name      = "opta-${var.layer_name}-k8s-cntrol-plane"
+  name      = "cops-${var.layer_name}-k8s-cntrol-plane"
   network   = google_compute_network.vpc.id
   direction = "INGRESS"
   allow {
@@ -25,5 +25,5 @@ resource "google_compute_firewall" "k8s_extra_rules" {
     ports    = ["8443"]
   }
   source_ranges = [var.k8s_master_ipv4_cidr_block]
-  target_tags   = ["opta-${var.layer_name}-nodes"]
+  target_tags   = ["cops-${var.layer_name}-nodes"]
 }

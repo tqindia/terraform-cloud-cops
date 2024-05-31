@@ -36,7 +36,7 @@ Common labels
 {{- define "k8s-service.labels" -}}
 helm.sh/chart: {{ include "k8s-service.chart" . }}
 {{ include "k8s-service.selectorLabels" . }}
-{{ include "k8s-service.optaLabels" . }}
+{{ include "k8s-service.copsLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -51,10 +51,10 @@ app.kubernetes.io/name: {{ include "k8s-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "k8s-service.optaLabels" -}}
-opta.dev/module-name: {{ .Values.moduleName }}
-opta.dev/layer-name: {{ .Values.layerName }}
-opta.dev/environment-name: {{ .Values.environmentName }}
+{{- define "k8s-service.copsLabels" -}}
+cops.dev/module-name: {{ .Values.moduleName }}
+cops.dev/layer-name: {{ .Values.layerName }}
+cops.dev/environment-name: {{ .Values.environmentName }}
 {{- end }}
 
 {{/*Namespace name*/}}

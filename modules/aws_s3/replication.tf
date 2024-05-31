@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "replication_trust" {
 
 resource "aws_iam_role" "replication" {
   count = var.same_region_replication ? 1 : 0
-  name  = "opta-${var.layer_name}-${var.module_name}-replication"
+  name  = "cops-${var.layer_name}-${var.module_name}-replication"
 
   assume_role_policy = data.aws_iam_policy_document.replication_trust.json
 }
@@ -49,7 +49,7 @@ data "aws_iam_policy_document" "replication" {
 
 resource "aws_iam_policy" "replication" {
   count = var.same_region_replication ? 1 : 0
-  name  = "opta-${var.layer_name}-${var.module_name}-replication"
+  name  = "cops-${var.layer_name}-${var.module_name}-replication"
 
   policy = data.aws_iam_policy_document.replication[0].json
 }

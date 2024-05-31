@@ -5,7 +5,7 @@ resource "random_password" "mongodb_atlas_password" {
 }
 
 resource "mongodbatlas_database_user" "user" {
-  username           = "opta-${var.layer_name}-${var.module_name}-user"
+  username           = "cops-${var.layer_name}-${var.module_name}-user"
   password           = random_password.mongodb_atlas_password.result
   project_id         = var.mongodb_atlas_project_id
   auth_database_name = "admin"

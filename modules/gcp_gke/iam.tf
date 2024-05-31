@@ -7,8 +7,8 @@ resource "random_string" "node_group_hash" {
 
 // https://cloud.google.com/kubernetes-engine/docs/how-to/hardening-your-cluster#use_least_privilege_sa
 resource "google_service_account" "gke_node" {
-  account_id   = "opta-${var.layer_name}-${random_string.node_group_hash.result}"
-  display_name = "opta-${var.layer_name}-default-node-pool"
+  account_id   = "cops-${var.layer_name}-${random_string.node_group_hash.result}"
+  display_name = "cops-${var.layer_name}-default-node-pool"
 }
 
 resource "google_project_iam_member" "gke_node_log_writer" {

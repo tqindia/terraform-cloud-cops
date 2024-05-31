@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "opta-base.name" -}}
+{{- define "cops-base.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "opta-base.fullname" -}}
+{{- define "cops-base.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "opta-base.chart" -}}
+{{- define "cops-base.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "opta-base.labels" -}}
-helm.sh/chart: {{ include "opta-base.chart" . }}
-{{ include "opta-base.selectorLabels" . }}
+{{- define "cops-base.labels" -}}
+helm.sh/chart: {{ include "cops-base.chart" . }}
+{{ include "cops-base.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "opta-base.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "opta-base.name" . }}
+{{- define "cops-base.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "cops-base.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*Namespace name*/}}
-{{- define "opta-base.namespaceName" -}}
+{{- define "cops-base.namespaceName" -}}
 {{- .Values.layerName }}
 {{- end }}
 {{/*Service name*/}}
-{{- define "opta-base.serviceName" -}}
+{{- define "cops-base.serviceName" -}}
 {{- .Values.moduleName }}
 {{- end }}
 

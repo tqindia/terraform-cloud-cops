@@ -2,18 +2,18 @@ locals {
   target_ports    = { http : "http", https : "https" }
   container_ports = { http : 80, https : 443, healthcheck : 10254 }
   config          = merge({ ssl-redirect : false }, var.nginx_config)
-  annotations     = "{\"exposed_ports\": { \"443\":{\"name\": \"opta-${var.layer_name}-https\"}}}"
-  negs            = formatlist("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/networkEndpointGroups/opta-%s-https", data.google_client_config.current.project, var.zone_names, var.layer_name)
+  annotations     = "{\"exposed_ports\": { \"443\":{\"name\": \"cops-${var.layer_name}-https\"}}}"
+  negs            = formatlist("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/networkEndpointGroups/cops-%s-https", data.google_client_config.current.project, var.zone_names, var.layer_name)
 }
 
 data "google_client_config" "current" {}
 
 data "google_container_cluster" "main" {
-  name     = "opta-${var.env_name}"
+  name     = "cops-${var.env_name}"
   location = data.google_client_config.current.region
 }
 data "google_compute_network" "vpc" {
-  name = "opta-${var.layer_name}"
+  name = "cops-${var.layer_name}"
 }
 
 variable "env_name" {

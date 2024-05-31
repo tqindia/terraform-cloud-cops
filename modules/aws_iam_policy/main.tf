@@ -19,6 +19,6 @@ resource "aws_iam_policy" "policy" {
   name   = "${var.env_name}-${var.layer_name}-${var.module_name}"
   policy = templatefile(var.file, local.templatevars)
   tags = {
-    "opta-created" : true
+    "cops-created" : true
   }
 }

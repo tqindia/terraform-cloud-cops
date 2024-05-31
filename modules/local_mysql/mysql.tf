@@ -6,8 +6,8 @@ terraform {
     }
   }
 }
-resource "helm_release" "opta-local-mysql" {
-  name             = "opta-local-mysql"
+resource "helm_release" "cops-local-mysql" {
+  name             = "cops-local-mysql"
   repository       = "https://charts.bitnami.com/bitnami"
   chart            = "mysql"
   version          = "8.8.8"

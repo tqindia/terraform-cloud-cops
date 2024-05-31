@@ -1,9 +1,9 @@
 data "aws_security_group" "security_group" {
-  name = "opta-${var.env_name}-db-sg"
+  name = "cops-${var.env_name}-db-sg"
 }
 
 data "aws_kms_key" "main" {
-  key_id = "alias/opta-${var.env_name}"
+  key_id = "alias/cops-${var.env_name}"
 }
 
 resource "random_password" "mysql_password" {
@@ -18,8 +18,8 @@ resource "random_string" "db_name_hash" {
 }
 
 resource "aws_rds_cluster" "db_cluster" {
-  cluster_identifier      = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
-  db_subnet_group_name    = "opta-${var.env_name}"
+  cluster_identifier      = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}"
+  db_subnet_group_name    = "cops-${var.env_name}"
   database_name           = var.db_name
   engine                  = "aurora-mysql"
   engine_version          = var.engine_version
@@ -39,7 +39,7 @@ resource "aws_rds_cluster" "db_cluster" {
 
 resource "aws_rds_cluster_instance" "db_instance" {
   count                      = var.multi_az ? 2 : 1
-  identifier                 = "opta-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
+  identifier                 = "cops-${var.layer_name}-${var.module_name}-${random_string.db_name_hash.result}-${count.index}"
   cluster_identifier         = aws_rds_cluster.db_cluster.id
   instance_class             = var.instance_class
   engine                     = aws_rds_cluster.db_cluster.engine

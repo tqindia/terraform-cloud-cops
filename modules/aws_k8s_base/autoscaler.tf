@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "autoscaler" {
 }
 
 resource "aws_iam_policy" "autoscaler" {
-  name   = "opta-${var.env_name}-k8s-autoscaler"
+  name   = "cops-${var.env_name}-k8s-autoscaler"
   policy = data.aws_iam_policy_document.autoscaler.json
 }
 
@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "trust_k8s_openid" {
 
 resource "aws_iam_role" "autoscaler" {
   assume_role_policy = data.aws_iam_policy_document.trust_k8s_openid.json
-  name               = "opta-${var.env_name}-k8s-autoscaler"
+  name               = "cops-${var.env_name}-k8s-autoscaler"
 }
 
 resource "aws_iam_role_policy_attachment" "autoscaler" {

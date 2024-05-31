@@ -1,12 +1,12 @@
 data "azurerm_nat_gateway" "nat" {
-  name                = "opta-${var.env_name}-nat-gateway"
-  resource_group_name = data.azurerm_resource_group.opta.name
+  name                = "cops-${var.env_name}-nat-gateway"
+  resource_group_name = data.azurerm_resource_group.cops.name
 }
 
-resource "azurerm_user_assigned_identity" "opta" {
-  name                = "opta-${var.env_name}-aks"
-  location            = data.azurerm_resource_group.opta.location
-  resource_group_name = data.azurerm_resource_group.opta.name
+resource "azurerm_user_assigned_identity" "cops" {
+  name                = "cops-${var.env_name}-aks"
+  location            = data.azurerm_resource_group.cops.location
+  resource_group_name = data.azurerm_resource_group.cops.name
   lifecycle {
     ignore_changes = [
       location
@@ -15,9 +15,9 @@ resource "azurerm_user_assigned_identity" "opta" {
 }
 
 resource "azurerm_user_assigned_identity" "agent_pool" {
-  name                = "opta-${var.env_name}-aks-agent-pool"
-  location            = data.azurerm_resource_group.opta.location
-  resource_group_name = data.azurerm_resource_group.opta.name
+  name                = "cops-${var.env_name}-aks-agent-pool"
+  location            = data.azurerm_resource_group.cops.location
+  resource_group_name = data.azurerm_resource_group.cops.name
   lifecycle {
     ignore_changes = [
       location
@@ -25,29 +25,29 @@ resource "azurerm_user_assigned_identity" "agent_pool" {
   }
 }
 
-resource "azurerm_role_assignment" "opta" {
-  scope                = data.azurerm_resource_group.opta.id
+resource "azurerm_role_assignment" "cops" {
+  scope                = data.azurerm_resource_group.cops.id
   role_definition_name = "Network Contributor"
-  principal_id         = azurerm_user_assigned_identity.opta.principal_id
+  principal_id         = azurerm_user_assigned_identity.cops.principal_id
   lifecycle { ignore_changes = [scope] }
 }
 
 resource "azurerm_role_assignment" "k8s_assign_identities" {
-  scope                = data.azurerm_resource_group.opta.id
+  scope                = data.azurerm_resource_group.cops.id
   role_definition_name = "Managed Identity Operator"
-  principal_id         = azurerm_user_assigned_identity.opta.principal_id
+  principal_id         = azurerm_user_assigned_identity.cops.principal_id
   lifecycle { ignore_changes = [scope] }
 }
 
 resource "azurerm_role_assignment" "azurerm_container_registry" {
-  scope                = data.azurerm_resource_group.opta.id
+  scope                = data.azurerm_resource_group.cops.id
   role_definition_name = "AcrPull"
-  principal_id         = azurerm_user_assigned_identity.opta.principal_id
+  principal_id         = azurerm_user_assigned_identity.cops.principal_id
   lifecycle { ignore_changes = [scope] }
 }
 
 resource "azurerm_role_assignment" "azurerm_container_registry_agent_pool" {
-  scope                = data.azurerm_resource_group.opta.id
+  scope                = data.azurerm_resource_group.cops.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_user_assigned_identity.agent_pool.principal_id
   lifecycle { ignore_changes = [scope] }
@@ -57,10 +57,10 @@ resource "azurerm_role_assignment" "azurerm_container_registry_agent_pool" {
 # tfsec:ignore:azure-container-limit-authorized-ips
 resource "azurerm_kubernetes_cluster" "main" {
   name                = var.cluster_name
-  location            = data.azurerm_resource_group.opta.location
-  resource_group_name = data.azurerm_resource_group.opta.name
-  dns_prefix          = "opta"
-  //  disk_encryption_set_id = azurerm_disk_encryption_set.opta.id
+  location            = data.azurerm_resource_group.cops.location
+  resource_group_name = data.azurerm_resource_group.cops.name
+  dns_prefix          = "cops"
+  //  disk_encryption_set_id = azurerm_disk_encryption_set.cops.id
   kubernetes_version = var.kubernetes_version
 
   network_profile {
@@ -85,13 +85,13 @@ resource "azurerm_kubernetes_cluster" "main" {
     enable_auto_scaling = true
     max_count           = var.max_nodes
     min_count           = var.min_nodes
-    vnet_subnet_id      = data.azurerm_subnet.opta.id
+    vnet_subnet_id      = data.azurerm_subnet.cops.id
     os_disk_size_gb     = var.node_disk_size
   }
 
   identity {
     type         = "UserAssigned"
-    identity_ids = [azurerm_user_assigned_identity.opta.id]
+    identity_ids = [azurerm_user_assigned_identity.cops.id]
   }
 
   kubelet_identity {
@@ -108,7 +108,7 @@ resource "azurerm_kubernetes_cluster" "main" {
   }
 
   depends_on = [
-    azurerm_role_assignment.opta,
+    azurerm_role_assignment.cops,
     azurerm_role_assignment.azurerm_container_registry,
     azurerm_role_assignment.k8s_assign_identities,
     azurerm_role_assignment.azurerm_container_registry_agent_pool
